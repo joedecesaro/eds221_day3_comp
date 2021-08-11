@@ -1,6 +1,9 @@
 # Practicing conditionals and loops ----
 # -package required are below
 library(tidyverse)
+library(tidyverse)
+library(palmerpenguins)
+
 # Refresh out memory on boolean operators ----
 
 pinyon_pine <- 14
@@ -81,5 +84,61 @@ switch(species,
        "owl" = print("screech"), 
        "fox" = print("obnoxious"))
 
+# Using the summary function----
+penguin_summary <- penguins %>% 
+  group_by(species, island) %>% 
+  summarize(mean_bill_depth = mean(bill_depth_mm, na.rm = TRUE),
+            sd_bill_depth = sd(bill_depth_mm, na.rm = TRUE))
+
+# Practicing data wrangling----
+penguins_subset <- penguins %>% 
+  filter(island == "Torgersen") %>% 
+  select(species, flipper_length_mm, year)
+
+
+# For loops intro practice----
+animal <- c("cats", "dog", "dog", "cat", "zebra", "elephant")
+
+for (i in seq_along(animal)) {
+  if (animal[i] == "dog"){
+    print("I love dogs!!")
+  } else{
+    print("this is a different animal:(")
+  }
+}
+
+# Example where you will store the output of a for loop. This is what you will usually want to do.----
+species <- c("dog", "elephant", "goat", "dog", "dog", "elephant")
+age_human <- c(3, 8, 4, 6, 12, 18)
+
+animal_ages <- vector(mode = "numeric", length = length(species))
+
+for (i in seq_along(species)) {
+  if (species[i] == "dog") {
+    animal_age <- age_human[i] * 7
+  } else if (species[i] == "elephant") {
+    animal_age <- age_human[i] * 0.88
+  } else if (species[i] == "goat") {
+    animal_age <- age_human[i] * 4.7
+  }
+  animal_ages[i] <- animal_age
+}
+
+# Calculate the mean value of each column in a data.frame
+mean_mtcars <- vector(mode = "numeric", length = ncol(mtcars))
+
+for (i in 1:ncol(mtcars)) {
+  mean_val <- mean(mtcars[[i]], na.rm = TRUE)
+  mean_mtcars[i] <- mean_val
+}
+
+mean_mtcars
+
+# Same thing as above but with apply()
+apply(X = mtcars, 2, mean, na.rm = TRUE)
+
+# Same thing as above with the map()
+
+map_df(.x = mtcars, .f = mean)
 
 
